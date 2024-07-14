@@ -22,13 +22,17 @@ const Game = () => {
   const [canContinue, setCanContinue] = useState(false); // Novo estado para controle de continuação
   const totalSteps = 5;
 
-  const { fetchRandomPhrase, verifyAnswer, compareCorrectAnswer, compareUserAnswer } =
-    useAudioServer();
+  const {
+    fetchRandomPhrase,
+    verifyAnswer,
+    compareCorrectAnswer,
+    compareUserAnswer
+  } = useAudioServer();
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["randomPhrase", currentStep],
     queryFn: fetchRandomPhrase,
-    enabled: currentStep <= totalSteps,
+    enabled: currentStep <= totalSteps
   });
 
   useEffect(() => {
@@ -48,14 +52,17 @@ const Game = () => {
     setIsCorrect(isCorrect);
 
     if (isCorrect) {
-      setCorrectCount((prevCount) => {
+      setCorrectCount(prevCount => {
         const newCount = prevCount + 1;
         Cookies.set("correctCount", newCount.toString(), { expires: 1 });
         return newCount;
       });
     }
 
-    const correctFeedbackComponent = compareCorrectAnswer(userAnswer, data?.phrase);
+    const correctFeedbackComponent = compareCorrectAnswer(
+      userAnswer,
+      data?.phrase
+    );
     const userFeedbackComponent = compareUserAnswer(userAnswer, data?.phrase);
     setCorrectFeedback(correctFeedbackComponent);
     setUserFeedback(userFeedbackComponent);
@@ -64,7 +71,7 @@ const Game = () => {
 
   function handleContinue() {
     if (currentStep < totalSteps) {
-      setCurrentStep((prevStep) => prevStep + 1);
+      setCurrentStep(prevStep => prevStep + 1);
     } else {
       setIsLessonComplete(true);
       Cookies.set("lessonComplete", "true", { expires: 1 });
@@ -111,22 +118,29 @@ const Game = () => {
               </GameInput.Field>
             ) : (
               <GameInput.Textarea
-                onKeyDown={(event) => {
+                onKeyDown={event => {
                   if (event.key === "Enter") {
                     handleButtonPress();
                   }
                 }}
-                onChange={(e) => setUserAnswer(e.target.value)}
+                onChange={e => setUserAnswer(e.target.value)}
                 value={userAnswer}
               />
             )}
           </div>
           {canContinue ? (
-            <FooterButton buttonState={isCorrect} onButtonPress={handleContinue}>
+            <FooterButton
+              buttonState={isCorrect}
+              onButtonPress={handleContinue}
+            >
               Continue
             </FooterButton>
           ) : (
-            <FooterButton buttonState={isCorrect} disabled={!userAnswer} onButtonPress={handleButtonPress}>
+            <FooterButton
+              buttonState={isCorrect}
+              disabled={!userAnswer}
+              onButtonPress={handleButtonPress}
+            >
               Submit
             </FooterButton>
           )}

@@ -24,9 +24,8 @@ export default function HomePage() {
 
   return (
     <div className="md:overflow-hidden flex flex-col">
-   
       <Header />
-      <div className="flex flex-col items-center justify-center flex-grow p-6 bg-white h-screen">
+      <div className="flex flex-col items-center justify-center flex-grow bg-white h-screen sm:-mb-24">
         <div className="">
           <Icon />
         </div>
